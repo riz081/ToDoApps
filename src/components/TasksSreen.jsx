@@ -1,7 +1,7 @@
 // src/components/TasksScreen.jsx
 
 import React, { useEffect } from 'react';
-import { Button, FlatList, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
+import { Button, FlatList, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View, Text, Image } from 'react-native';
 import Task from './Task';
 import { useSelector, useDispatch } from 'react-redux';
 import { readTaskData, setTask, writeTaskData, clearTaskInput } from '../redux/tasksSlice';
@@ -31,11 +31,21 @@ const TasksScreen = () => {
     >
       <View style={styles.innerContainer}>
         <View style={styles.taskListContainer}>
-          <FlatList
-            data={tasksList}
-            renderItem={renderTask}
-            keyExtractor={(item) => item.key}
-          />
+          {tasksList.length === 0 ? (
+            <View style={styles.noDataContainer}>
+              <Image
+                source={require('../../assets/no-data.png')}
+                style={styles.noDataImage}
+              />
+              <Text style={styles.noDataText}>No Data Found</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={tasksList}
+              renderItem={renderTask}
+              keyExtractor={(item) => item.key}
+            />
+          )}
         </View>
         <View style={styles.inputContainer}>
           <TextInput
@@ -65,7 +75,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F4F6',
-    marginVertical: 10
+    marginVertical: 10,
   },
   innerContainer: {
     flex: 1,
@@ -75,6 +85,20 @@ const styles = StyleSheet.create({
   taskListContainer: {
     flex: 1,
     marginBottom: 16,
+  },
+  noDataContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noDataImage: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+  },
+  noDataText: {
+    fontSize: 18,
+    color: '#9CA3AF',
   },
   inputContainer: {
     flexDirection: 'row',
